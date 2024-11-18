@@ -1,32 +1,38 @@
 pipeline {
     agent any
 
+    environment {
+        PYTHON_PATH = 'python3'
+    }
+
     stages {
         stage('Checkout Code') {
             steps {
-                // Clone the repository
                 checkout scm
             }
         }
 
         stage('Install Python') {
             steps {
-                // Ensure Python is installed
-                sh 'python3 --version'
+                sh "${PYTHON_PATH} --version"
+            }
+        }
+
+        stage('Lint Code') {
+            steps {
+                sh "${PYTHON_PATH} -m flake8 ."
             }
         }
 
         stage('Run Tests') {
             steps {
-                // Run unit tests
-                sh 'python3 -m unittest discover'
+                sh "${PYTHON_PATH} -m unittest discover"
             }
         }
     }
 
     post {
         always {
-            // Archive test results and logs
             archiveArtifacts artifacts: '**/*.log', allowEmptyArchive: true
         }
         success {
