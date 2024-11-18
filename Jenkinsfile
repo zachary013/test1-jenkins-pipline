@@ -12,14 +12,14 @@ pipeline {
         stage('Install Python') {
             steps {
                 // Ensure Python is installed
-                sh 'python --version'
+                sh 'python3 --version'
             }
         }
 
         stage('Run Tests') {
             steps {
                 // Run unit tests
-                sh 'python -m unittest discover'
+                sh 'python3 -m unittest discover'
             }
         }
     }
